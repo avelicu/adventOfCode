@@ -27,17 +27,19 @@ class Day2Problem2 {
       Paper(2),
       Scissors(3);
 
-      val beats: RPS get() = when (this) {
-        Rock -> Scissors
-        Paper -> Rock
-        Scissors -> Paper
-      }
+      val beats: RPS
+        get() = when (this) {
+          Rock -> Scissors
+          Paper -> Rock
+          Scissors -> Paper
+        }
 
-      val beatenBy: RPS get() = when (this) {
-        Scissors -> Rock
-        Rock -> Paper
-        Paper -> Scissors
-      }
+      val beatenBy: RPS
+        get() = when (this) {
+          Scissors -> Rock
+          Rock -> Paper
+          Paper -> Scissors
+        }
 
       fun playForOutcome(desiredOutcome: Outcome): RPS {
         return when (desiredOutcome) {
@@ -61,13 +63,13 @@ class Day2Problem2 {
 
     @JvmStatic
     fun main(args: Array<String>) {
-      var score = 0;
-      File("input.txt").forEachLine {
-        val split = it.split(" ")
-        val opponent = RPS.fromOpponent(split[0].first())
-        val desiredOutcome = Outcome.fromDesiredOutcome(split[1].first())
-        score += desiredOutcome.score + opponent.playForOutcome(desiredOutcome).score
-      }
+      val score =
+        File("input.txt").bufferedReader().lineSequence().map {
+          val split = it.split(" ")
+          val opponent = RPS.fromOpponent(split[0].first())
+          val desiredOutcome = Outcome.fromDesiredOutcome(split[1].first())
+          desiredOutcome.score + opponent.playForOutcome(desiredOutcome).score
+        }.sum()
       println(score)
     }
   }
