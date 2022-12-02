@@ -68,9 +68,13 @@ class Day2Problem2 {
       val score =
         File("input.txt").bufferedReader().lineSequence().sumOf {
           val split = it.split(" ")
-          val opponent = split[0].parseOpponentPlay()!!
-          val desiredOutcome = split[1].parseDesiredOutcome()!!
-          desiredOutcome.score + opponent.playForOutcome(desiredOutcome).score
+          val opponent = split[0].parseOpponentPlay()
+          val desiredOutcome = split[1].parseDesiredOutcome()
+          if (opponent == null || desiredOutcome == null) {
+            0
+          } else {
+            desiredOutcome.score + opponent.playForOutcome(desiredOutcome).score
+          }
         }
       println(score)
     }
