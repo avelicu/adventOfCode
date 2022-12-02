@@ -64,12 +64,12 @@ class Day2Problem2 {
     @JvmStatic
     fun main(args: Array<String>) {
       val score =
-        File("input.txt").bufferedReader().lineSequence().map {
+        File("input.txt").bufferedReader().lineSequence().sumOf {
           val split = it.split(" ")
           val opponent = RPS.fromOpponent(split[0].first())
           val desiredOutcome = Outcome.fromDesiredOutcome(split[1].first())
           desiredOutcome.score + opponent.playForOutcome(desiredOutcome).score
-        }.sum()
+        }
       println(score)
     }
   }
