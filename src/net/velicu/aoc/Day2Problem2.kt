@@ -1,6 +1,8 @@
 package net.velicu.aoc
 
 import java.io.File
+import net.velicu.aoc.Day2Problem2.Companion.Outcome.Companion.parseDesiredOutcome
+import net.velicu.aoc.Day2Problem2.Companion.RPS.Companion.parseOpponentPlay
 
 class Day2Problem2 {
   companion object {
@@ -11,12 +13,12 @@ class Day2Problem2 {
       Lose(0);
 
       companion object {
-        fun fromDesiredOutcome(c: Char): Outcome {
-          return when (c) {
-            'X' -> Lose
-            'Y' -> Draw
-            'Z' -> Win
-            else -> throw IllegalArgumentException()
+        fun String.parseDesiredOutcome(): Outcome? {
+          return when (this) {
+            "X" -> Lose
+            "Y" -> Draw
+            "Z" -> Win
+            else -> null
           }
         }
       }
@@ -50,12 +52,12 @@ class Day2Problem2 {
       }
 
       companion object {
-        fun fromOpponent(c: Char): RPS {
-          return when (c) {
-            'A' -> Rock
-            'B' -> Paper
-            'C' -> Scissors
-            else -> throw IllegalArgumentException()
+        fun String.parseOpponentPlay(): RPS? {
+          return when (this) {
+            "A" -> Rock
+            "B" -> Paper
+            "C" -> Scissors
+            else -> null
           }
         }
       }
@@ -66,8 +68,8 @@ class Day2Problem2 {
       val score =
         File("input.txt").bufferedReader().lineSequence().sumOf {
           val split = it.split(" ")
-          val opponent = RPS.fromOpponent(split[0].first())
-          val desiredOutcome = Outcome.fromDesiredOutcome(split[1].first())
+          val opponent = split[0].parseOpponentPlay()!!
+          val desiredOutcome = split[1].parseDesiredOutcome()!!
           desiredOutcome.score + opponent.playForOutcome(desiredOutcome).score
         }
       println(score)
