@@ -52,7 +52,7 @@ class Day2Problem1 {
     @JvmStatic
     fun main(args: Array<String>) {
       var score = 0;
-      File("input.txt").forEachLine {
+      File("inputs/2.input.txt").forEachLine {
         val split = it.split(" ")
         val opponent = RPS.fromOpponent(split[0].first())
         val me = RPS.fromMe(split[1].first())

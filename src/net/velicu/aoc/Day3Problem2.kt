@@ -7,7 +7,7 @@ class Day3Problem2 {
     @JvmStatic
     fun main(args: Array<String>) {
       val sumOfCommons =
-        File("input.txt").bufferedReader().lineSequence().chunked(3) {
+        File("inputs/3.input.txt").bufferedReader().lineSequence().chunked(3) {
           // Why do I need to specify the types, i.e. String::, Set<Char>::?
           val common = it.map(String::toSet).reduce(Set<Char>::intersect)
           assert(common.size == 1)

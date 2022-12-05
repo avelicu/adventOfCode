@@ -10,7 +10,7 @@ class Day4Problem1 {
     @JvmStatic
     fun main(args: Array<String>) {
       val completelyContainedCount =
-        File("input.txt").bufferedReader().lineSequence().map { line ->
+        File("inputs/4.input.txt").bufferedReader().lineSequence().map { line ->
           val (leftFrom, leftTo, rightFrom, rightTo) =
             lineRe.matchEntire(line)!!.groupValues.drop(1).map(String::toInt)
           rightFrom in leftFrom..leftTo && rightTo in leftFrom..leftTo

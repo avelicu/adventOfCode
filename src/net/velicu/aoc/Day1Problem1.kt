@@ -10,7 +10,7 @@ class Day1Problem1 {
 
       var currentElfCalories = 0;
       var maxElfCalories = 0;
-      File("input.txt").forEachLine {
+      File("inputs/1.input.txt").forEachLine {
         if (it == "") {
           maxElfCalories = max(maxElfCalories, currentElfCalories);
           currentElfCalories = 0;

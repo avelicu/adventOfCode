@@ -19,7 +19,7 @@ class Day1Problem2 {
 
     @JvmStatic
     fun main(args: Array<String>) {
-      val calories = extractElfCalories(File("input.txt").bufferedReader().lineSequence())
+      val calories = extractElfCalories(File("inputs/1.input.txt").bufferedReader().lineSequence())
       println(calories.sortedDescending().take(3).sum())
     }
   }

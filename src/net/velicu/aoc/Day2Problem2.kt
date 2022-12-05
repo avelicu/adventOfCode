@@ -66,7 +66,7 @@ class Day2Problem2 {
     @JvmStatic
     fun main(args: Array<String>) {
       val score =
-        File("input.txt").bufferedReader().lineSequence().sumOf {
+        File("inputs/2.input.txt").bufferedReader().lineSequence().sumOf {
           val (opponentString, desiredOutcomeString) = it.split(" ")
           val opponent = opponentString.parseOpponentPlay()
           val desiredOutcome = desiredOutcomeString.parseDesiredOutcome()
