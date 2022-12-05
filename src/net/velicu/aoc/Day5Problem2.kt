@@ -24,12 +24,12 @@ class Day5Problem2 {
         for (i in 0..stackCount) {
           val ch = line[i*4+1]
           if (ch != ' ') {
-            reversedStacks.getOrPut(i + 1, ::mutableListOf).add(ch)
+            reversedStacks.getOrPut(i + 1, ::mutableListOf).add(0, ch)
           }
         }
       }
 
-      return reversedStacks.map { (k, v) -> k to v.reversed() }.toMap()
+      return reversedStacks
     }
 
     @JvmStatic
@@ -59,7 +59,7 @@ class Day5Problem2 {
         destStack.addAll(tmpStack.reversed())
         println("  after:       source stack $srcStack dest $destStack")
       }
-      return state.map { (k, v) -> k to v.toList() }.toMap()
+      return state
     }
 
     private val lineMatcher = Regex("""^move (\d+) from (\d+) to (\d+)$""")
