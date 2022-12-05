@@ -34,7 +34,6 @@ class Day5Problem1 {
 
     @JvmStatic
     fun main(args: Array<String>) {
-      // TODO: can we figure out how to partially consume a .lineSequence?..
       val lines = File("inputs/5.input.txt").bufferedReader().lineSequence()
       val lineIterator = lines.iterator()
       val initialState = readInitialState(lineIterator)
