@@ -16,24 +16,29 @@ class Day10Problem2 {
           .iterator()
           .let { PeekingIterator(it) }
 
-      var lastStateBeforeBusting: State? = null
-      val displayMatrix: List<List<Char>> = List(6) { row -> List(40) { col ->
-        val clock = (row * 40 + col) + 1
+      val displayMatrix: Sequence<Sequence<Char>> = run {
+        var lastStateBeforeBusting: State? = null
 
-        // println("row $row col $col advancing to clock $clock")
-        while (stateIterator.peek().cycle <= clock) {
-          lastStateBeforeBusting = stateIterator.next()
-        }
-        // println("got to $lastStateBeforeBusting (next would be ${stateIterator.peek()}")
+        (0 until 6).asSequence().map { row ->
+          (0 until 40).asSequence().map { col ->
+            val clock = (row * 40 + col) + 1
 
-        lastStateBeforeBusting!!.let {
-          if (abs(it.x - col) <= 1) {
-            '#'
-          } else {
-            '.'
+            // println("row $row col $col advancing to clock $clock")
+            while (stateIterator.peek().cycle <= clock) {
+              lastStateBeforeBusting = stateIterator.next()
+            }
+            // println("got to $lastStateBeforeBusting (next would be ${stateIterator.peek()}")
+
+            lastStateBeforeBusting!!.let {
+              if (abs(it.x - col) <= 1) {
+                '#'
+              } else {
+                '.'
+              }
+            }
           }
         }
-      } }
+      }
 
       displayMatrix.forEach { row ->
         row.forEach { column -> print(column) }
