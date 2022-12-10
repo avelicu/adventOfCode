@@ -1,5 +1,6 @@
 package net.velicu.aoc
 
+import PeekingIterator
 import java.io.File
 
 class Day7 {
@@ -68,37 +69,6 @@ class Day7 {
       root.children.values
         .filterIsInstance<Directory>()
         .forEach { yieldAll(flatListOfDirectories(it)) }
-    }
-
-    private class PeekingIterator<T>(val wrappedIterator: Iterator<T>): Iterator<T> {
-      private var peeked: T? = null;
-
-      override fun hasNext(): Boolean = wrappedIterator.hasNext() || peeked != null
-      override fun next(): T {
-        peeked.let {
-          if (it != null) {
-            peeked = null
-            return it
-          } else {
-            return wrappedIterator.next()
-          }
-        }
-      }
-      fun peek(): T? {
-        peeked.let {
-          if (it == null) {
-            if (!wrappedIterator.hasNext()) {
-              return null
-            }
-
-            wrappedIterator.next().let {
-              peeked = it
-              return it
-            }
-          }
-          return it
-        }
-      }
     }
 
     private sealed interface FilesystemObject {
