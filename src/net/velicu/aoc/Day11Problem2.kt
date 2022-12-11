@@ -1,8 +1,5 @@
 package net.velicu.aoc
 
-import java.math.BigInteger
-import kotlin.math.max
-
 class Day11Problem2 {
   companion object {
 
@@ -12,42 +9,42 @@ class Day11Problem2 {
       val monkeyDefs = listOf(
         MonkeyDef(
           listOf(66, 79),
-          { it *= 11 },
+          { it * 11 },
           7,
           6, 7),
         MonkeyDef(
           listOf(84, 94, 94, 81, 98, 75),
-          { it *= 17 },
+          { it * 17 },
           13,
           5, 2),
         MonkeyDef(
           listOf(85, 79, 59, 64, 79, 95, 67),
-          { it += 8 },
+          { it + 8 },
           5,
           4, 5),
         MonkeyDef(
           listOf(70),
-          { it += 3 },
+          { it + 3 },
           19,
           6, 0),
         MonkeyDef(
           listOf(57, 69, 78, 78),
-          { it += 4 },
+          { it + 4 },
           2,
           0, 3),
         MonkeyDef(
           listOf(65, 92, 60, 74, 72),
-          { it += 7 },
+          { it + 7 },
           11,
           3, 4),
         MonkeyDef(
           listOf(77, 91, 91),
-          { it *= it },
+          { it * it },
           17,
           1, 7),
         MonkeyDef(
           listOf(76, 58, 57, 55, 67, 77, 54, 99),
-          { it += 6 },
+          { it + 6 },
           3,
           2, 1))
 
@@ -59,10 +56,11 @@ class Day11Problem2 {
 
         for (monkey in monkeys) {
           for (item in monkey.objects) {
-            monkey.operation.invoke(item)
+            val newItem = monkey.operation.invoke(item)
             val destinationMonkey =
-              if (item % monkey.divisibleByTest == 0) monkey.trueMonkeyId else monkey.falseMonkeyId
-            monkeys[destinationMonkey].objects.add(item)
+              if (newItem % monkey.divisibleByTest == 0)
+                monkey.trueMonkeyId else monkey.falseMonkeyId
+            monkeys[destinationMonkey].objects.add(newItem)
           }
           monkey.inspectionCount += monkey.objects.count()
           monkey.objects.clear()
@@ -83,7 +81,7 @@ class Day11Problem2 {
 
     private data class MonkeyDef (
       val startingObjects: List<Int>,
-      val operation: (ModuloHolder) -> Unit,
+      val operation: (ModuloHolder) -> ModuloHolder,
       val divisibleByTest: Int,
       val trueMonkeyId: Int,
       val falseMonkeyId: Int)
@@ -92,7 +90,7 @@ class Day11Problem2 {
       val objects = monkeyDef.startingObjects
         .map { ModuloHolder(it, interestingMods) }.toMutableList()
 
-      val operation: (ModuloHolder) -> Unit = monkeyDef.operation
+      val operation: (ModuloHolder) -> ModuloHolder = monkeyDef.operation
       val divisibleByTest: Int = monkeyDef.divisibleByTest
       val trueMonkeyId: Int = monkeyDef.trueMonkeyId
       val falseMonkeyId: Int = monkeyDef.falseMonkeyId
@@ -101,26 +99,30 @@ class Day11Problem2 {
       override fun toString() = "$objects"
     }
 
-    private class ModuloHolder(value: Int, interestingMods: List<Int>) {
-      private val modMap: MutableMap<Int, Int> =
-        interestingMods.associateWith { value % it }.toMutableMap()
+    private class ModuloHolder(private val modMap: Map<Int, Int>) {
 
-      operator fun plusAssign(v: Int) {
-        modMap.keys.forEach { k -> modMap[k] = (modMap[k]!! + v) % k } // Can we avoid the !! ?
+      constructor(initialValue: Int, interestingMods: List<Int>):
+        this(interestingMods.associateWith { initialValue % it })
+
+      private fun modHolderWithOperationApplied(op: (Int, Int) -> Int): ModuloHolder =
+        modMap.map { (modulo, value) -> modulo to (op.invoke(modulo, value)) % modulo }.toMap()
+          .let { ModuloHolder(it) }
+
+      operator fun plus(v: Int): ModuloHolder =
+        modHolderWithOperationApplied { _, oldv -> oldv + v }
+
+      operator fun times(v: Int): ModuloHolder =
+        modHolderWithOperationApplied { _, oldv -> oldv * v }
+
+      operator fun times(v: ModuloHolder): ModuloHolder =
+        modHolderWithOperationApplied { mod, oldv -> oldv * v.getModuloDangerously(mod) }
+
+      operator fun rem(mod: Int): Int {
+        return getModuloDangerously(mod) % mod
       }
 
-      operator fun timesAssign(v: Int) {
-        modMap.keys.forEach { k -> modMap[k] = (modMap[k]!! * v) % k } // Can we avoid the !! ?
-      }
-
-      operator fun timesAssign(v: ModuloHolder) {
-        modMap.keys
-          .forEach { k -> modMap[k] = (modMap[k]!! * v.modMap[k]!!) % k } // Can we avoid the !! ?
-      }
-
-      operator fun rem(v: Int): Int {
-        return modMap[v]?.let { it % v }
-          ?: throw IllegalArgumentException("Modulo $v not being tracked")
+      private fun getModuloDangerously(mod: Int): Int {
+        return modMap[mod] ?: throw IllegalArgumentException("Modulo $mod not being tracked")
       }
 
       override fun toString(): String = "($modMap)"
