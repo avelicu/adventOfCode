@@ -52,7 +52,7 @@ class Day11Problem2 {
       val monkeys = monkeyDefs.map { Monkey(it, interestingMods) }
 
       repeat(10000) {
-        println("Round $it:")
+        // println("Round $it:")
 
         for (monkey in monkeys) {
           for (item in monkey.objects) {
@@ -66,8 +66,8 @@ class Day11Problem2 {
           monkey.objects.clear()
         }
 
-        monkeys.forEachIndexed { i, monkey -> println("Monkey $i: $monkey") }
-        println()
+        // monkeys.forEachIndexed { i, monkey -> println("Monkey $i: $monkey") }
+        // println()
       }
 
       val monkeyBusiness =
