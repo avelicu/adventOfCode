@@ -86,8 +86,7 @@ class Day11Problem2 {
       val operation: (ModuloHolder) -> Unit,
       val divisibleByTest: Int,
       val trueMonkeyId: Int,
-      val falseMonkeyId: Int) {
-    }
+      val falseMonkeyId: Int)
 
     private class Monkey(monkeyDef: MonkeyDef, interestingMods: List<Int>) {
       val objects = monkeyDef.startingObjects
