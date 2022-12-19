@@ -6,6 +6,8 @@ class Day11Problem2 {
     @JvmStatic
     fun main(args: Array<String>) {
 
+      val startTime = System.currentTimeMillis()
+
       val monkeyDefs = listOf(
         MonkeyDef(
           listOf(66, 79),
@@ -77,6 +79,7 @@ class Day11Problem2 {
           .slice(0..1)
           .reduce { l, r -> l * r }
       println(monkeyBusiness)
+      println(System.currentTimeMillis() - startTime)
     }
 
     private data class MonkeyDef (
