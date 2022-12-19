@@ -1,13 +1,12 @@
 package net.velicu.aoc
 
-import java.math.BigInteger
-import kotlin.math.max
-
 class Day11Problem2 {
   companion object {
 
     @JvmStatic
     fun main(args: Array<String>) {
+
+      val startTime = System.currentTimeMillis()
 
       val monkeyDefs = listOf(
         MonkeyDef(
@@ -55,7 +54,7 @@ class Day11Problem2 {
       val monkeys = monkeyDefs.map { Monkey(it, interestingMods) }
 
       repeat(10000) {
-        println("Round $it:")
+        // println("Round $it:")
 
         for (monkey in monkeys) {
           for (item in monkey.objects) {
@@ -68,8 +67,8 @@ class Day11Problem2 {
           monkey.objects.clear()
         }
 
-        monkeys.forEachIndexed { i, monkey -> println("Monkey $i: $monkey") }
-        println()
+        // monkeys.forEachIndexed { i, monkey -> println("Monkey $i: $monkey") }
+        // println()
       }
 
       val monkeyBusiness =
@@ -79,6 +78,7 @@ class Day11Problem2 {
           .slice(0..1)
           .reduce { l, r -> l * r }
       println(monkeyBusiness)
+      println(System.currentTimeMillis() - startTime)
     }
 
     private data class MonkeyDef (
